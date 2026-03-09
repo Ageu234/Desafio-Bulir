@@ -291,10 +291,6 @@ const services = await prisma.service.findMany({
 
 ---
 
-## Ready to Go! 🚀
 
-Everything is set up and ready to use. Start with the backend, then web, then mobile.
 
-Questions? Check the detailed READMEs in each directory.
 
-**Happy Coding!** 💻
