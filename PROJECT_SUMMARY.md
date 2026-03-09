@@ -443,6 +443,6 @@ All features requested have been implemented and thoroughly documented.
 
 ---
 
-**Congratulations! You now have a complete Service Booking Platform! 🎊**
+**This project is related to the challenges faced by the company Bulir 🎊**
 
 For questions, refer to the detailed READMEs in each application directory.
