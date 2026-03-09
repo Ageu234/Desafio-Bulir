@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CLIENT
+  SERVICE_PROVIDER
+}
+
+enum ReservationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id               String   @id @default(uuid())
+  name             String
+  nif              String   @unique
+  email            String   @unique
+  password         String
+  role             UserRole
+  balance          Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  providedServices Service[]
+  clientReservations Reservation[] @relation("ClientReservations")
+  providerReservations Reservation[] @relation("ProviderReservations")
+  clientTransactions Transaction[] @relation("ClientTransactions")
+  providerTransactions Transaction[] @relation("ProviderTransactions")
+
+  @@map("users")
+}
+
+model Service {
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  price        Float
+  providerId   String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  provider     User         @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+  transactions Transaction[]
+
+  @@index([providerId])
+  @@map("services")
+}
+
+model Reservation {
+  id           String   @id @default(uuid())
+  serviceId    String
+  clientId     String
+  providerId   String
+  price        Float
+  status       ReservationStatus @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  service      Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  client       User     @relation("ClientReservations", fields: [clientId], references: [id], onDelete: Cascade)
+  provider     User     @relation("ProviderReservations", fields: [providerId], references: [id], onDelete: Cascade)
+  transaction  Transaction?
+
+  @@index([serviceId])
+  @@index([clientId])
+  @@index([providerId])
+  @@map("reservations")
+}
+
+model Transaction {
+  id           String   @id @default(uuid())
+  clientId     String
+  providerId   String
+  serviceId    String
+  reservationId String?
+  amount       Float
+  description  String   @default("Service booking")
+  createdAt    DateTime @default(now())
+
+  // Relations
+  client       User     @relation("ClientTransactions", fields: [clientId], references: [id], onDelete: Cascade)
+  provider     User     @relation("ProviderTransactions", fields: [providerId], references: [id], onDelete: Cascade)
+  service      Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  reservation  Reservation? @relation(fields: [reservationId], references: [id])
+
+  @@index([clientId])
+  @@index([providerId])
+  @@index([serviceId])
+  @@map("transactions")
+}
