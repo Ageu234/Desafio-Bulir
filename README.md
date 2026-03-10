@@ -401,7 +401,7 @@ Name: João Silva
 Email: provider@test.com
 NIF: 12345678901
 Password: 123456
-Balance: R$ 1,000
+Balance: kz 100,000
 ```
 
 **Client**
@@ -410,13 +410,13 @@ Name: Maria Santos
 Email: client@test.com
 NIF: 98765432101
 Password: 123456
-Balance: R$ 5,000
+Balance: kz 50,000
 ```
 
 ### Sample Services
-- Limpeza de Casa (R$ 150)
-- Reparo Elétrico (R$ 200)
-- Consultoria de TI (R$ 300)
+- Limpeza de Casa (kz 150)
+- Reparo Elétrico (kz 200)
+- Consultoria de TI (kz 300)
 
 ---
 
@@ -531,4 +531,4 @@ For detailed information, refer to individual README files:
 
 ---
 
-**Happy Coding! 🚀**
+**Boa avaliação, e obrigado!**
